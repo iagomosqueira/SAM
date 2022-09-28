@@ -13,8 +13,8 @@ modelDescription <-function (fit,...){
       }
   } 
   ret<-list()
-  ret$modelVersion <- 'The model is a state-space stock assessment (SAM from the package "stockassessment" version ' +
-                      packageVersion("stockassessment") + ").\n\n"
+  ret$modelVersion <- 'The model is a state-space stock assessment (SAM from the package "stockassessmentComp" version ' +
+                      packageVersion("stockassessmentComp") + ").\n\n"
   ret$modelIntro <- 'The model works by assuming that stock-sizes at age (N) and fishing mortalities at age (F) ' +
                       'are unobserved processes. '
   ret$ages <- 'The first age group is age ' + fit$conf$minAge + ' and the last age group is age ' + fit$conf$maxAge +
@@ -33,7 +33,7 @@ modelDescription <-function (fit,...){
 ##' @export
 modelVersionInfo <-function (fit,...){
   ret<-c(
-    '# The fit was run with a specific version of stockassessment package.',
+    '# The fit was run with a specific version of stockassessmentComp package.',
     '# If in the mean time version on your system has been updated',
     '# you can revert back to the version used by inserting this:',
     '',

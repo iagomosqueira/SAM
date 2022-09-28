@@ -1,4 +1,4 @@
-Package: stockassessment
+Package: stockassessmentComp
 Title: State-Space Assessment Model
 Version: 0.5.4
 Date: 2017-10-11
@@ -7,7 +7,7 @@ Authors@R: c(person("Anders","Nielsen",role=c("aut","cre"), email="an@aqua.dtu.d
             person("Kasper","Kristensen",role="aut"), 
             person("Mollie", "Brooks", role="aut"),
 	    person(c("Christoffer","Moesgaard"), "Albertsen", role="aut"))
-Description: Fitting SAM...
+Description: Fitting SAM in a way usable by FLSAM
 License: GPL-2
 Imports: TMB, ellipse, MASS
 LinkingTo: TMB, RcppEigen

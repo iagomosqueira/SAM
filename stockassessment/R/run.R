@@ -14,7 +14,7 @@
 ##' @importFrom TMB MakeADFun sdreport
 ##' @importFrom stats nlminb optimHess
 ##' @importFrom utils relist packageDescription
-##' @useDynLib stockassessment
+##' @useDynLib stockassessmentComp
 ##' @export
 ##' @examples
 ##' data(nscodData)
@@ -34,10 +34,10 @@ sam.fit <- function(data, conf, parameters, newtonsteps=3, rm.unidentified=FALSE
   parameters$missing <- numeric(nmissing)
   if(length(conf$keyVarLogP)>1){
     ran <- c("logN", "logF","logPS", "missing")
-    obj <- MakeADFun(tmball, parameters, random=ran, DLL="stockassessment",...)
+    obj <- MakeADFun(tmball, parameters, random=ran, DLL="stockassessmentComp",...)
   } else {
     ran <- c("logN", "logF", "missing")
-    obj <- MakeADFun(tmball, parameters, random=ran, DLL="stockassessment",...)
+    obj <- MakeADFun(tmball, parameters, random=ran, DLL="stockassessmentComp",...)
   }
 
   if(rm.unidentified){
@@ -45,7 +45,7 @@ sam.fit <- function(data, conf, parameters, newtonsteps=3, rm.unidentified=FALSE
     gr <- obj$gr()
     safemap <- relist(gr,skel)
     safemap <- lapply(safemap, function(x)factor(ifelse(abs(x)>1.0e-15,1:length(x),NA)))
-    obj <- MakeADFun(tmball, parameters, random=ran, map=safemap, DLL="stockassessment", ...)
+    obj <- MakeADFun(tmball, parameters, random=ran, map=safemap, DLL="stockassessmentComp", ...)
   }
   
   lower2<-rep(-Inf,length(obj$par))
@@ -82,8 +82,8 @@ sam.fit <- function(data, conf, parameters, newtonsteps=3, rm.unidentified=FALSE
     #sdrep$cov<-NULL # save memory
 
     ret <- list(sdrep=sdrep, pl=pl, plsd=plsd, data=data, conf=conf, opt=opt, obj=obj, rep=rep, low=lower2, hig=upper2)
-    attr(ret, "RemoteSha") <- substr(packageDescription("stockassessment")$RemoteSha, 1, 12)
-    attr(ret, "Version") <- packageDescription("stockassessment")$Version
+    attr(ret, "RemoteSha") <- substr(packageDescription("stockassessmentComp")$RemoteSha, 1, 12)
+    attr(ret, "Version") <- packageDescription("stockassessmentComp")$Version
     class(ret)<-"sam"
     } else { ret <- opt}
   return(ret)
@@ -143,7 +143,7 @@ jit <- function(fit, nojit=10, par=defpar(fit$data, fit$conf), sd=.25, ncores=de
   parv <- unlist(par)
   pars <- lapply(1:nojit, function(i)relist(parv+rnorm(length(parv),sd=sd), par))
   cl <- makeCluster(ncores) #set up nodes
-  clusterEvalQ(cl, {library(stockassessment)}) #load the package to each node
+  clusterEvalQ(cl, {library(stockassessmentComp)}) #load the package to each node
   fits <- parLapply(cl, pars, function(p)sam.fit(fit$data, fit$conf, p, silent = TRUE))
   stopCluster(cl) #shut it down
   attr(fits,"fit") <- fit
